@@ -66,7 +66,9 @@ class HaierAPI(HomeAssistantView):
     async def get(self, request):
         if not getattr(self.haier, "allow_http", False):
             return web.Response(text="404: Not found", status=404, content_type="text/plain")
-        return self.json(self.haier.to_dict())
+        response = self.json(self.haier.to_dict())
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
 
     async def post(self, request):
         if not getattr(self.haier, "allow_http_post", False):
